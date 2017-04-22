@@ -18,6 +18,8 @@ Description: A dataset ready for text analysis, mined from 500+ pdf documents
     2012 to 2017. See The Green Climate Fund website for the original documents used 
     to build the dataset.
 License: MIT + file LICENSE
+URL: https://github.com/ljodea/gcfboardr
+BugReports: https://github.com/ljodea/gcfboardr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
