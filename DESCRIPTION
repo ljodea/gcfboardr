@@ -6,6 +6,7 @@ Depends: R (>= 3.1.2)
 Imports:
 Suggests:
     tidytext,
+    dplyr,
     ggplot2,
     purrr,
     testthat
