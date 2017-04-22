@@ -1,7 +1,7 @@
 ## Test environments
 * Local OS X install: R 3.3.3
 * Ubuntu 12.04 (on Travis-CI): R 3.3.3
-* Win-builder: R-devel 3.4.0 RC
+* Win-builder: R-devel and R-release
 
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
