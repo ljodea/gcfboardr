@@ -100,6 +100,6 @@ str_replace_all("4 – 6 April hyphens, 4-6 hyphens, ------, //////, 4 -- 6 hyph
 gcfboard_docs <- filter(gcfboard_docs, text != "")
 
 ## Finally, add the data to the package
-devtools::use_data(gcfboard_docs, compress = "gzip", overwrite = TRUE)
+devtools::use_data(gcfboard_docs, compress = "bzip2", overwrite = TRUE)
 
 ## Finished!
