@@ -1,22 +1,19 @@
 Package: gcfboardr
 Type: Package
-Title: A text dataset harvested from Green Climate Fund Board documents
+Title: A text data set harvested from Green Climate Fund Board documents
 Version: 0.1.0
 Depends: R (>= 3.1.2)
-Imports: 
-    dplyr
+Imports:
 Suggests:
     tidytext,
     ggplot2,
     purrr,
-    pdftools,
-    readr,
     testthat
 Authors@R: person("Liam", "O'Dea", email = "liam.j.odea@gmail.com", role = c("aut", "cre"))
-Description: A dataset ready for text analysis, mined from 500+ pdf documents 
-    published by The Green Climate Fund (GCF). Data covers GCF board meetings from 
-    2012 to 2017. See The Green Climate Fund website for the original documents used 
-    to build the dataset.
+Description: A data set ready for text analysis, mined from 500+ documents 
+    published by The Green Climate Fund, covering board meetings from 2012 
+    to 2017. See The Green Climate Fund website for the original documents 
+    used to build the data set.
 License: MIT + file LICENSE
 URL: https://github.com/ljodea/gcfboardr
 BugReports: https://github.com/ljodea/gcfboardr
