@@ -1,6 +1,6 @@
 Package: gcfboardr
 Type: Package
-Title: A text data set harvested from Green Climate Fund Board documents
+Title: A Text Data Set Harvested from Green Climate Fund Board Documents
 Version: 0.1.0
 Depends: R (>= 3.1.2)
 Imports:
