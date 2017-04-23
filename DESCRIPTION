@@ -13,11 +13,12 @@ Suggests:
 Authors@R: person("Liam", "O'Dea", email = "liam.j.odea@gmail.com", role = c("aut", "cre"))
 Description: A data set ready for text analysis, mined from 500+ documents 
     published by The Green Climate Fund, covering board meetings from 2012 
-    to 2017. See The Green Climate Fund website for the original documents 
+    to 2017. See The <http://www.greenclimate.fund/boardroom/board-meetings/documents>Green Climate Fund website</> for the original documents 
     used to build the data set.
 License: MIT + file LICENSE
 URL: https://github.com/ljodea/gcfboardr
 BugReports: https://github.com/ljodea/gcfboardr
 Encoding: UTF-8
 LazyData: true
+LazyDataCompression: xz
 RoxygenNote: 6.0.1

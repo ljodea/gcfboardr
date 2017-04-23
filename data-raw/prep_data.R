@@ -99,7 +99,18 @@ str_replace_all("4 – 6 April hyphens, 4-6 hyphens, ------, //////, 4 -- 6 hyph
 ## clean up empty lines caused by removing links, emails, superfluous punctuation, etc
 gcfboard_docs <- filter(gcfboard_docs, text != "")
 
-## Finally, add the data to the package
-devtools::use_data(gcfboard_docs, compress = "bzip2", overwrite = TRUE)
+## In response to feedback from CRAN, reduce the size of the tarball to less than 5Mb ------
+## B.03 documents are encoded in a strange way, producing multiple unreadable documents, so omit
+## After removing both B.03 and any extra whitespace. Result: 5.3Mb
+
+# Now test whether the tarball will be less than 7.5Mb after using LazyDataCompression == xz in DESCRIPTION
+# So run the whole thing now, using original data. Result:
+str(gcfboard_docs)
+gcfboard_docs <- gcfboard_docs %>%
+  filter(meeting != "B.03") %>%
+  transmute(title, meeting, text = str_replace_all(text,"[\\s]+", " "))
+
+# Finally save the .rda file using xz compression
+devtools::use_data(gcfboard_docs, compress = "xz", overwrite = TRUE)
 
 ## Finished!

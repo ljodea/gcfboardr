@@ -9,6 +9,6 @@ test_that("tidy frame for GCF Board Docs is right", {
   d <- gcfboard_docs %>%
     group_by(meeting) %>%
     summarise(total_lines = n())
-  expect_equal(nrow(d), 29)
+  expect_equal(nrow(d), 28)
   expect_equal(ncol(d), 2)
 })
