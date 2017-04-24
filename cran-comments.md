@@ -1,9 +1,7 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Added proper web references to DESCRIPTION
-
-* Reduced the size of the tarball to less than 5Mb
+* Reduced the size of the tarball to 5Mb
 
 ## Test environments
 * Local OS X install: R 3.3.3

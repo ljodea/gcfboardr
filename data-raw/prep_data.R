@@ -69,26 +69,26 @@ gcfboard_docs$meeting <- as.factor(gcfboard_docs$meeting)
 
 ## Clean text with regex -----
 
-# trim leading and traling whitespace to cut down file size (took it down to 62.1Mb!)
+# trim leading and traling whitespace to cut down file size. Before: 71.8Mb AFter: 64.2Mb
 gcfboard_docs$text <- trimws(gcfboard_docs$text)
 
-# remove website links, b4 size: 62.1Mb, after size: 62Mb
+# remove website links. AFter: 64Mb
 gcfboard_docs$text <- str_replace_all(gcfboard_docs$text, " ?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "")
 
-# remove email addresses, b4 size: 62Mb, after size: 61.9Mb
+# remove email addresses. After size: 64Mb
 gcfboard_docs$text <- str_replace_all(gcfboard_docs$text, "\\S+@\\S+", "")
 
-# remove "page x" from strings, b4 size: 61.9Mb, after size: 61.9Mb
+# remove "page x" from strings, After size: 64Mb
 gcfboard_docs$text <- stringr::str_replace_all(gcfboard_docs$text,
                          "Page \\d+ of \\d+|page \\d+|Page \\d+|Page.\\d+|page.\\d+|page.\\w+|Page.\\w+|page \\w+|Page \\w+",
                          "")
 
-# remove board meeting/document references i.e. "GCF/B.16/23", b4 size: 61.9Mb, after size: 61.8Mb
+# remove board meeting/document references i.e. "GCF/B.16/23",A fter size: 63.8Mb
 gcfboard_docs$text <- str_replace_all(gcfboard_docs$text,
-                                      "GCF/B.\\d+/\\d+|gcf/B.\\d+/\\d+|gcf/b.\\d+/\\d+|GCF/\\w+.\\d+/\\d+|gcf/\\w+.\\d+|gcf/\\d+.\\d+|B.\\d+/\\d+",
+                                      "GCF/B.\\d+/\\d+|gcf/B.\\d+/\\d+|gcf/b.\\d+/\\d+|GCF/\\w+.\\d+/\\d+|gcf/\\w+.\\d+|gcf/\\d+.\\d+|B.\\d+/\\d+|GCF/\\w./\\d+",
                                       "")
 
-# remove punctuation which isn't useful (i.e. retain colons, semi-colons, infixed hyphens etc)
+# remove punctuation which isn't useful (i.e. retain colons, semi-colons, infixed hyphens etc). After size: 63.5Mb
 gcfboard_docs$text <- str_replace_all(gcfboard_docs$text,
                                       "((\\w\\s[–]\\s\\w)|(\\w\\s[-]\\s\\w)|\\w['-/]\\w)|[^[:alnum:] ,.?%:;]",
                                       "\\1")
@@ -96,21 +96,52 @@ str_replace_all("4 – 6 April hyphens, 4-6 hyphens, ------, //////, 4 -- 6 hyph
                 "((\\w\\s[–]\\s\\w)|(\\w\\s[-]\\s\\w)|\\w['-/]\\w)|[^[:alnum:] ,.?%:;]",
                 "\\1") # this works for the example, but not on the proper text itself
 
-## clean up empty lines caused by removing links, emails, superfluous punctuation, etc
-gcfboard_docs <- filter(gcfboard_docs, text != "")
-
 ## In response to feedback from CRAN, reduce the size of the tarball to less than 5Mb ------
 ## B.03 documents are encoded in a strange way, producing multiple unreadable documents, so omit
-## After removing both B.03 and any extra whitespace. Result: 5.3Mb
-
-# Now test whether the tarball will be less than 7.5Mb after using LazyDataCompression == xz in DESCRIPTION
-# So run the whole thing now, using original data. Result:
+## After removing both B.03 and any extra whitespace. Result: 5.3Mb (winbuilder said 5743268, tarball was 5.6Mb)
+data("gcfboard_docs")
 str(gcfboard_docs)
 gcfboard_docs <- gcfboard_docs %>%
   filter(meeting != "B.03") %>%
   transmute(title, meeting, text = str_replace_all(text,"[\\s]+", " "))
 
+## After 2nd rejection from CRAN, try to remove all "in-between" board meeting docs, 17,000 lines of text. Result: removes 1.7Mb
+str(gcfboard_docs)
+gcfboard_docs$meeting <- as.character(gcfboard_docs$meeting)
+gcfboard_docs <- filter(gcfboard_docs, nchar(meeting) <= 4)
+
+## Try saving the data now. Result size: 5.2Mb
+
+## Try with both meeting and title as factors. Before: 56.5 Mb, after: 52.8Mb
+gcfboard_docs$meeting <- as.factor(gcfboard_docs$meeting)
+gcfboard_docs$title <- as.factor(gcfboard_docs$title)
+
+## Try saving the data now. Result size: still 5.2Mb
+
+## Don't try a lookup table! It makes zero difference!
+
+## Try saving the data now. Result size: still 5.2Mb, with bzip2: 6.9Mb, with gzip: 9.8Mb
+
+## Try removing all numbers. Before: 50.8Mb. After: 47.4Mb
+gcfboard_docs <- gcfboard_docs %>%
+  transmute(text = str_replace_all(text, "[[:digit:]]", "")) %>%
+  filter(text != "")
+
+## Try saving the data now. Result size: 5Mb. Still not small enough for CRAN
+
+## Try remov
+
+## clean up empty lines caused by removing links, emails, superfluous punctuation, etc
+gcfboard_docs <- filter(gcfboard_docs, text != "")
+
+## How large will it be if I just save the text alone? Answer: 48.9Mb (or 3.9Mb smaller than the 3-column tbl)
+temp <- gcfboard_docs %>%
+  select(text)
+
 # Finally save the .rda file using xz compression
 devtools::use_data(gcfboard_docs, compress = "xz", overwrite = TRUE)
+
+## Better solution: just grab it from my github URL and make the package one that just compiles that data from my URL and loads it.
+## Much better: then I can avoid all this other shit.
 
 ## Finished!
